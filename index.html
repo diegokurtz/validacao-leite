@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="12 indicadores, 1 toque cada, cerca de 3 minutos. Ajude a desenhar o Fazenda Digital.">
+<meta property="og:title" content="Fazenda Digital · Validação de Indicadores">
+<meta property="og:description" content="Quais números mandam na sua fazenda de leite? 12 itens, cerca de 3 minutos.">
+<meta name="robots" content="noindex">
+<title>Fazenda Digital · Validação de Indicadores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{
+  --bg:#F4F1E6; --surface:#FCFBF6; --fg:#152B1C; --muted:#5A6A5D; --line:#DAD6C6;
+  --brand:#152B1C; --on-brand:#F4F1E6; --leaf:#8CCB5E; --on-leaf:#152B1C; --leaf-soft:#E3EFD6;
+  --off:#E7E3D6; --warn:#9A5B12;
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1B12; --surface:#15261A; --fg:#ECEFE4; --muted:#A1B2A4; --line:#2A3E2F;
+  --brand:#8CCB5E; --on-brand:#0E1B12; --leaf:#8CCB5E; --on-leaf:#0E1B12; --leaf-soft:#233B27;
+  --off:#23302A; --warn:#E3A55A; color-scheme:dark}}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 var(--f-body);padding-inline:16px;padding-block:env(safe-area-inset-top,0px) calc(92px + env(safe-area-inset-bottom,0px))}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+header.top{padding-block:24px 0;display:flex;flex-direction:column;gap:12px}
+.brandrow{display:flex;align-items:center;gap:10px}
+.mark{width:32px;height:32px;border-radius:8px;background:#152B1C;display:grid;place-items:center;flex:none}
+.brandname{font:800 16px/1.1 var(--f-display)}
+.brandname small{display:block;font:500 10.5px/1.3 var(--f-body);color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+h1{font:800 clamp(26px,6vw,34px)/1.08 var(--f-display);margin:4px 0 0;text-wrap:balance}
+.lede{margin:0;max-width:60ch}
+.lede b{font-weight:600}
+.who{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.who input{width:100%}
+input[type=text]{font:inherit;font-size:15px;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-height:42px;max-width:100%}
+.block{display:flex;flex-direction:column;gap:8px}
+.block h2{font:700 13px/1.2 var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px 14px;flex-wrap:wrap;padding:10px 12px;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.row[data-v="e"]{border-color:var(--leaf);box-shadow:inset 3px 0 0 var(--leaf)}
+.row[data-v="n"] .rname{color:var(--muted)}
+.rtext{min-width:0;flex:1 1 220px;display:flex;flex-direction:column}
+.rname{font-weight:600}
+.rdesc{font-size:13px;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--bg);flex:none}
+.seg button{font:500 13.5px var(--f-body);color:var(--fg);background:transparent;border:0;padding:7px 12px;cursor:pointer;min-height:38px}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"][data-v="e"]{background:var(--leaf);color:var(--on-leaf);font-weight:600}
+.seg button[aria-pressed="true"][data-v="u"]{background:var(--leaf-soft);color:var(--fg);font-weight:600}
+.seg button[aria-pressed="true"][data-v="n"]{background:var(--off);color:var(--muted);font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+label.chip{white-space:nowrap;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:14px;cursor:pointer;background:var(--surface);min-height:38px}
+label.chip input{accent-color:var(--leaf);margin:0}
+label.chip:has(input:checked){background:var(--leaf-soft);border-color:var(--leaf)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label.l,.field .l{font-size:14px;font-weight:600}
+.field input{width:100%}
+button:focus-visible,input:focus-visible,a:focus-visible,label.chip:focus-within{outline:2px solid var(--leaf);outline-offset:2px}
+.foot{font-size:12.5px;color:var(--muted);margin:0}
+.num{font-family:var(--f-mono);user-select:all;color:var(--fg)}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));z-index:5}
+.bar .in{max-width:640px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.prog{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;font-size:13px}
+.track{height:6px;border-radius:99px;background:var(--off);overflow:hidden}
+.fill{height:100%;background:var(--leaf);width:0;transition:width .25s}
+.btn{font:600 15px var(--f-body);border-radius:10px;padding:10px 16px;border:1px solid var(--brand);background:var(--brand);color:var(--on-brand);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;white-space:nowrap}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.copy{font:500 13px var(--f-body);background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0}
+@media (max-width:420px){.who{grid-template-columns:1fr}.seg button{padding:7px 10px}}
+@media (prefers-reduced-motion:reduce){.fill{transition:none}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brandrow">
+      <div class="mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 20 20"><path d="M10 2c3 4.2 5 6.9 5 9.6a5 5 0 0 1-10 0C5 8.9 7 6.2 10 2z" fill="none" stroke="#8CCB5E" stroke-width="2" stroke-linejoin="round"/><path d="M7.5 12.2a2.6 2.6 0 0 0 2.5 2.3" fill="none" stroke="#F4F1E6" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+      <div class="brandname">Fazenda Digital<small>by Campo Digital</small></div>
+    </div>
+    <h1>Quais números mandam na sua fazenda de leite?</h1>
+    <p class="lede">São <b>12 itens, 1 toque cada, cerca de 3 minutos</b>. Marque se o indicador é essencial, útil ou se vocês não usam. As respostas vão direto pelo WhatsApp.</p>
+    <div class="who">
+      <input type="text" id="p-nome" placeholder="Seu nome" aria-label="Seu nome" autocomplete="name">
+      <input type="text" id="p-emp" placeholder="Fazenda / propriedade" aria-label="Fazenda ou propriedade">
+    </div>
+  </header>
+
+  <div id="blocks"></div>
+
+  <div class="field">
+    <label class="l" for="p-falta">Faltou algum indicador importante? <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+    <input type="text" id="p-falta" placeholder="Ex.: custo da ração por vaca em lactação">
+  </div>
+  <div class="field">
+    <span class="l">Toparia testar na sua fazenda por 30 dias?</span>
+    <div class="chips" id="p-teste"></div>
+  </div>
+
+  <p class="foot">Se o WhatsApp não abrir, toque em <button class="copy" type="button" id="copy">copiar respostas</button> e mande para <span class="num">+55 48 99620-0390</span>.</p>
+</div>
+
+<div class="bar" role="region" aria-label="Enviar">
+  <div class="in">
+    <div class="prog"><span id="progtxt">0 de 12 marcados</span><div class="track"><div class="fill" id="fill"></div></div></div>
+    <a class="btn" id="wa" href="#" target="_blank" rel="noopener" aria-disabled="true">Enviar pelo WhatsApp</a>
+  </div>
+</div>
+
+<script>
+const WA = "5548996200390";
+const BLOCKS = [
+ {name:"Produção", items:[
+  {id:1, n:"Volume entregue no dia e no mês", d:"litros por entrega e acumulado"},
+  {id:2, n:"Custo por litro do mês", d:"comparado ao orçado"},
+  {id:3, n:"Margem por litro", d:"preço recebido menos custo"}]},
+ {name:"Financeiro", items:[
+  {id:4, n:"Contas a vencer nos próximos 7 dias", d:"valor, fornecedor e data"},
+  {id:5, n:"Despesas do mês por categoria", d:"alimentação, sanidade, mão de obra…"},
+  {id:6, n:"Receita do leite no mês", d:"o que o laticínio pagou"}]},
+ {name:"Liquidação do laticínio", items:[
+  {id:7, n:"Conferência do extrato de liquidação", d:"preço, bonificações e descontos × o combinado"},
+  {id:8, n:"Valor a recuperar nas divergências", d:"R$ apontado item a item"},
+  {id:9, n:"Histórico do preço por litro", d:"mês a mês, com bonificações"}]},
+ {name:"Rotina e avisos", items:[
+  {id:10, n:"Resumo diário às 6h no WhatsApp", d:"volume, custo e contas do dia"},
+  {id:11, n:"Alerta de conta chegando ao vencimento", d:"aviso antes de vencer"},
+  {id:12, n:"Alerta de custo acima do orçado", d:"quando o custo/litro estoura a meta"}]}
+];
+const ALL = BLOCKS.flatMap(b=>b.items), TOTAL = ALL.length;
+const LBL = {e:"Essencial", u:"Útil", n:"Não uso"};
+
+let S = {v:{}};
+try{ const r = localStorage.getItem("fazenda-validacao-3min"); if(r) S = Object.assign(S, JSON.parse(r)); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem("fazenda-validacao-3min", JSON.stringify(S)); }catch(e){} };
+
+const host = document.getElementById("blocks");
+BLOCKS.forEach(b=>{
+  const sec = document.createElement("section"); sec.className="block";
+  const h = document.createElement("h2"); h.textContent = b.name; sec.append(h);
+  b.items.forEach(it=>{
+    const row = document.createElement("div"); row.className="row";
+    if(S.v[it.id]) row.dataset.v = S.v[it.id];
+    row.innerHTML = `<div class="rtext"><span class="rname">${it.n}</span><span class="rdesc">${it.d}</span></div>
+      <span class="seg" role="group" aria-label="${it.n}">${["e","u","n"].map(v=>`<button type="button" data-v="${v}" aria-pressed="${S.v[it.id]===v}">${LBL[v]}</button>`).join("")}</span>`;
+    row.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{
+      const v = S.v[it.id]===btn.dataset.v ? undefined : btn.dataset.v;
+      if(v){ S.v[it.id]=v; row.dataset.v=v; } else { delete S.v[it.id]; delete row.dataset.v; }
+      row.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed", String(x.dataset.v===v)));
+      save(); update();
+    }));
+    sec.append(row);
+  });
+  host.append(sec);
+});
+
+const tbox = document.getElementById("p-teste");
+["Sim","Talvez","Agora não"].forEach((o,i)=>{
+  const l = document.createElement("label"); l.className="chip";
+  const inp = document.createElement("input"); inp.type="radio"; inp.name="teste"; inp.id="t-"+i; inp.value=o;
+  if(S.teste===o) inp.checked=true;
+  inp.addEventListener("change",()=>{ S.teste=o; save(); update(); });
+  l.append(inp, document.createTextNode(o)); tbox.append(l);
+});
+["p-nome","p-emp","p-falta"].forEach(id=>{
+  const el = document.getElementById(id);
+  if(S[id]) el.value = S[id];
+  el.addEventListener("input",()=>{ S[id]=el.value; save(); update(); });
+});
+const val = id => (S[id]||"").trim();
+
+function buildText(){
+  const L = ["*Fazenda Digital · indicadores*"];
+  L.push([val("p-nome"), val("p-emp")].filter(Boolean).join(" · ") || "(sem identificação)");
+  ["e","u","n"].forEach(v=>{
+    const its = ALL.filter(i=>S.v[i.id]===v);
+    if(its.length){ L.push("", `*${LBL[v].toUpperCase()}*`); its.forEach(i=>L.push(`• ${i.n}`)); }
+  });
+  if(val("p-falta")) L.push("", "*Faltou:* "+val("p-falta"));
+  if(S.teste) L.push("", "*Teste 30 dias:* "+S.teste);
+  return L.join("\n");
+}
+function update(){
+  const n = Object.keys(S.v).length;
+  document.getElementById("progtxt").textContent = `${n} de ${TOTAL} marcados`;
+  document.getElementById("fill").style.width = (n/TOTAL*100)+"%";
+  const wa = document.getElementById("wa");
+  wa.href = `https://wa.me/${WA}?text=${encodeURIComponent(buildText())}`;
+  wa.setAttribute("aria-disabled", String(n===0));
+}
+document.getElementById("copy").addEventListener("click", async e=>{
+  const b = e.currentTarget;
+  try{ await navigator.clipboard.writeText(buildText()); b.textContent="respostas copiadas"; }
+  catch(err){ b.textContent="não deu para copiar, use o botão Enviar"; }
+  setTimeout(()=>b.textContent="copiar respostas", 2600);
+});
+update();
+</script>
+
+</body>
+</html>
